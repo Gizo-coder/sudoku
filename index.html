@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sudoku</title>
+    <link rel="icon" type="image/x-icon" href="/public/favicon.png" />
+  </head>
+  <body>
+    <div id="app">
+      <h1>Sudoku</h1>
+
+      <div id="difficulty-menu">
+        <button data-difficulty="easy">Kolay</button>
+        <button data-difficulty="medium">Orta</button>
+        <button data-difficulty="hard">Zor</button>
+      </div>
+
+      <div id="game-info">
+        <div id="game-status">
+          <span id="timer">Süre: 00:00</span>
+        </div>
+        <button id="hint-button">💡 İpucu</button>
+      </div>
+      <div id="best-time-info"></div>
+
+      <div id="grid-wrapper">
+        <div id="sudoku-grid"></div>
+        <div id="start-overlay">
+          <span id="start-button">BAŞLAT</span>
+        </div>
+      </div>
+
+      <div id="win-message"></div>
+    </div>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
