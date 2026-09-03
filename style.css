@@ -280,3 +280,29 @@ body {
   background: white;
   cursor: pointer;
 }
+#number-pad {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+  width: 456px;
+}
+
+.num-btn {
+  padding: 14px 0;
+  font-size: 18px;
+  font-weight: bold;
+  border: 2px solid #333;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.num-btn:hover {
+  background: #f0f0f0;
+}
+
+.num-btn.clear-btn {
+  color: #a32d2d;
+  border-color: #a32d2d;
+}

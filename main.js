@@ -197,6 +197,20 @@ function handleKeyPress(e) {
   }
 }
 
+function handleNumberInput(num) {
+  if (!selectedCell || isGameWon) return;
+
+  const { row, col } = selectedCell;
+
+  if (num === 0) {
+    currentPuzzle[row][col] = 0;
+  } else {
+    currentPuzzle[row][col] = num;
+  }
+
+  renderCellValue(row, col);
+}
+
 function renderCellValue(row, col) {
   const cell = gridContainer.querySelector(`[data-row="${row}"][data-col="${col}"]`);
   const value = currentPuzzle[row][col];
@@ -454,6 +468,11 @@ startPuzzleButton.addEventListener('click', () => {
 menuButton.addEventListener('click', showLandingScreen);
 
 hintButton.addEventListener('click', giveHint);
+document.querySelectorAll('.num-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    handleNumberInput(parseInt(btn.dataset.num));
+  });
+});
 
 // ============ BAŞLANGIÇ ============
 
