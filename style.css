@@ -3,13 +3,184 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f0f0f0;
+  background-color: #f7f7f5;
   margin: 0;
   padding: 40px 0;
 }
 
-h1 {
+#app {
+  width: 456px;
+}
+
+/* ============ GİRİŞ EKRANI ============ */
+
+#landing-header {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+#app-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #e6f1fb;
+  margin-bottom: 12px;
+  font-size: 24px;
+  color: #185fa5;
+}
+
+#landing-header h1 {
+  margin: 0 0 4px;
+  color: #222;
+  font-size: 40px;
+}
+
+#tagline {
+  color: #777;
+  font-size: 14px;
+  margin: 0;
+}
+
+#preview-board {
+  border-radius: 16px;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+#difficulty-menu {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin: 16px 0 16px;
+}
+
+.diff-card {
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 16px 8px;
+  text-align: center;
+  cursor: pointer;
+  background: white;
+}
+
+.diff-card[data-difficulty="easy"] { background: #eaf3de; }
+.diff-card[data-difficulty="medium"] { background: #faeeda; }
+.diff-card[data-difficulty="hard"] { background: #fcebeb; }
+
+.diff-card.active { border-color: #333; }
+
+.diff-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px;
+}
+
+.diff-card[data-difficulty="easy"] .diff-icon { background: #639922; }
+.diff-card[data-difficulty="medium"] .diff-icon { background: #ba7517; }
+.diff-card[data-difficulty="hard"] .diff-icon { background: #a32d2d; }
+
+.diff-label {
+  font-weight: bold;
+  font-size: 14px;
+  margin: 0 0 2px;
   color: #333;
+}
+
+.diff-card[data-difficulty="easy"] .diff-label { color: #639922; }
+.diff-card[data-difficulty="medium"] .diff-label { color: #ba7517; }
+.diff-card[data-difficulty="hard"] .diff-label { color: #a32d2d; }
+
+.diff-best {
+  font-size: 11px;
+  color: #666;
+  margin: 0;
+  min-height: 14px;
+}
+
+#start-puzzle-button {
+  width: 100%;
+  background: #1a1a1a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+#start-puzzle-button:hover {
+  background: #333;
+}
+
+#stats-footer {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 24px;
+
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+  color: #222;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: #888;
+  margin: 0;
+}
+
+/* ============ OYUN EKRANI ============ */
+
+#game-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
+
+#menu-button {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+#menu-button:hover {
+  color: #222;
+}
+
+#best-time-info {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 14px;
+}
+
+#grid-wrapper {
+  width: fit-content;
 }
 
 #sudoku-grid {
@@ -45,7 +216,16 @@ h1 {
   color: #1a73e8;
 }
 
-/* Her 3x3 kutuyu görsel olarak ayırmak için kalın kenarlıklar */
+.cell.error {
+  color: #d32f2f;
+  background-color: #ffebee;
+}
+
+.cell.hint {
+  color: #f57f17;
+  background-color: #fff8e1;
+}
+
 .cell:nth-child(3n) {
   border-right: 3px solid #333;
 }
@@ -56,113 +236,6 @@ h1 {
 
 .row-thick-bottom {
   border-bottom: 3px solid #333;
-}
-
-.cell.error {
-  color: #d32f2f;
-  background-color: #ffebee;
-}
-
-#difficulty-menu {
-  margin-bottom: 20px;
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-  width: 456px; /* grid ile aynı genişlik: 9*50px + 2*3px kenarlık */
-}
-
-#difficulty-menu button {
-  padding: 5px 50px;
-  font-size: 16px;
-  border: 2px solid #333;
-  background-color: white;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-#difficulty-menu button:hover {
-  background-color: #e0e0e0;
-}
-
-#difficulty-menu button.active {
-  background-color: #1a73e8;
-  color: white;
-  border-color: #1a73e8;
-}
-
-#best-time-info {
-  width: 456px;
-  font-size: 15px;
-  color: #888;
-  margin-top: -5px;
-  margin-bottom: 15px;
-}
-
-#game-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 456px;
-  margin-bottom: 10px;
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-}
-
-#game-status {
-  display: flex;
-  gap: 20px;
-}
-
-#win-message {
-  margin-top: 20px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #2e7d32;
-  min-height: 30px;
-}
-#grid-wrapper {
-  position: relative;
-  width: fit-content;
-}
-
-#start-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(255, 255, 255, 0.55);
-  cursor: pointer;
-}
-
-#corner-label {
-  position: absolute;
-  top: 8px;
-  left: 12px;
-  font-size: 13px;
-  color: #bbb;
-}
-
-#start-button {
-  font-size: 44px;
-  font-weight: bold;
-  color: #222;
-  letter-spacing: 2px;
-}
-
-/* Önizleme (oyun başlamadan önceki) ızgara stili - soluk, pembemsi çizgiler */
-#sudoku-grid.preview .cell {
-  border-color: #f3c9c9;
-  cursor: default;
-}
-
-#sudoku-grid.preview .cell:nth-child(3n) {
-  border-right-color: #ccc;
-}
-
-#sudoku-grid.preview .cell.row-thick-bottom {
-  border-bottom-color: #ccc;
 }
 
 #hint-button {
@@ -184,7 +257,26 @@ h1 {
   cursor: not-allowed;
 }
 
-.cell.hint {
-  color: #f57f17;
-  background-color: #fff8e1;
+#win-message {
+  margin-top: 20px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #2e7d32;
+  min-height: 30px;
+}
+
+#win-message .win-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+}
+
+#win-message button {
+  font-size: 14px;
+  font-weight: normal;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 2px solid #333;
+  background: white;
+  cursor: pointer;
 }

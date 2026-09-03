@@ -3,34 +3,102 @@
   <head>
     <meta charset="UTF-8" />
     <title>Sudoku</title>
-    <link rel="icon" type="image/x-icon" href="/public/favicon.png" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   </head>
   <body>
     <div id="app">
-      <h1>Sudoku</h1>
 
-      <div id="difficulty-menu">
-        <button data-difficulty="easy">Kolay</button>
-        <button data-difficulty="medium">Orta</button>
-        <button data-difficulty="hard">Zor</button>
+      <!-- ============ GİRİŞ EKRANI ============ -->
+      <div id="landing-screen">
+        <div id="landing-header">
+          <div id="preview-board">
+            <svg width="70" height="70" viewBox="0 0 120 120">
+              <rect x="1" y="1" width="118" height="118" fill="none" stroke="#333" stroke-width="2"/>
+              <line x1="40" y1="1" x2="40" y2="119" stroke="#333" stroke-width="2"/>
+              <line x1="80" y1="1" x2="80" y2="119" stroke="#333" stroke-width="2"/>
+              <line x1="1" y1="40" x2="119" y2="40" stroke="#333" stroke-width="2"/>
+              <line x1="1" y1="80" x2="119" y2="80" stroke="#333" stroke-width="2"/>
+              <g stroke="#ccc" stroke-width="0.5">
+                <line x1="13.33" y1="1" x2="13.33" y2="119"/><line x1="26.67" y1="1" x2="26.67" y2="119"/>
+                <line x1="53.33" y1="1" x2="53.33" y2="119"/><line x1="66.67" y1="1" x2="66.67" y2="119"/>
+                <line x1="93.33" y1="1" x2="93.33" y2="119"/><line x1="106.67" y1="1" x2="106.67" y2="119"/>
+                <line x1="1" y1="13.33" x2="119" y2="13.33"/><line x1="1" y1="26.67" x2="119" y2="26.67"/>
+                <line x1="1" y1="53.33" x2="119" y2="53.33"/><line x1="1" y1="66.67" x2="119" y2="66.67"/>
+                <line x1="1" y1="93.33" x2="119" y2="93.33"/><line x1="1" y1="106.67" x2="119" y2="106.67"/>
+              </g>
+              <text x="6.67" y="10.67" text-anchor="middle" font-size="11" fill="#333">4</text>
+              <text x="60" y="10.67" text-anchor="middle" font-size="11" fill="#333">8</text>
+              <text x="100" y="24" text-anchor="middle" font-size="11" fill="#1a73e8">2</text>
+              <text x="33.33" y="37.33" text-anchor="middle" font-size="11" fill="#333">6</text>
+              <text x="86.67" y="50.67" text-anchor="middle" font-size="11" fill="#1a73e8">9</text>
+              <text x="6.67" y="64" text-anchor="middle" font-size="11" fill="#333">3</text>
+              <text x="46.67" y="77.33" text-anchor="middle" font-size="11" fill="#1a73e8">1</text>
+              <text x="113.33" y="90.67" text-anchor="middle" font-size="11" fill="#333">7</text>
+              <text x="73.33" y="104" text-anchor="middle" font-size="11" fill="#333">5</text>
+            </svg>
+         </div>
+          <h1>Sudoku</h1>
+          <p id="tagline">Sharpen your mind, one puzzle at a time</p>
+        </div>
+        <div id="difficulty-menu">
+          <button data-difficulty="easy" class="diff-card">
+            <div class="diff-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 21c0-9 6-15 15-15-1 9-7 15-15 15Z"/>
+                <path d="M5 21c3-3 6-6 9-11"/>
+              </svg>
+            </div>
+            <p class="diff-label">Easy</p>
+            <p class="diff-best" id="best-easy"></p>
+          </button>
+          <button data-difficulty="medium" class="diff-card">
+            <div class="diff-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/>
+              </svg>
+            </div>
+            <p class="diff-label">Medium</p>
+            <p class="diff-best" id="best-medium"></p>
+          </button>
+          <button data-difficulty="hard" class="diff-card">
+            <div class="diff-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3c-4.4 0-8 3.4-8 8 0 3 1.6 4.8 3 6v3h2v-2h2v2h2v-2h2v2h2v-3c1.4-1.2 3-3 3-6 0-4.6-3.6-8-8-8Z"/>
+                <circle cx="9" cy="11" r="1.3" fill="white" stroke="none"/>
+                <circle cx="15" cy="11" r="1.3" fill="white" stroke="none"/>
+              </svg>
+            </div>
+            <p class="diff-label">Hard</p>
+            <p class="diff-best" id="best-hard"></p>
+          </button>
+        </div>
+
+        <button id="start-puzzle-button">Start puzzle</button>
+
+        <div id="stats-footer">
+          <div class="stat"><p class="stat-value" id="stat-solved">0</p><p class="stat-label">Solved</p></div>
+          <div class="stat"><p class="stat-value" id="stat-streak">0</p><p class="stat-label">Day streak</p></div>
+          <div class="stat"><p class="stat-value" id="stat-fastest">--:--</p><p class="stat-label">Fastest</p></div>
+        </div>
       </div>
 
-      <div id="game-info">
-        <div id="game-status">
+      <!-- ============ OYUN EKRANI ============ -->
+      <div id="game-screen" style="display: none;">
+        <div id="game-info">
+          <button id="menu-button">← Menü</button>
           <span id="timer">Süre: 00:00</span>
+          <button id="hint-button">💡 İpucu</button>
         </div>
-        <button id="hint-button">💡 İpucu</button>
-      </div>
-      <div id="best-time-info"></div>
 
-      <div id="grid-wrapper">
-        <div id="sudoku-grid"></div>
-        <div id="start-overlay">
-          <span id="start-button">BAŞLAT</span>
+        <div id="best-time-info"></div>
+
+        <div id="grid-wrapper">
+          <div id="sudoku-grid"></div>
         </div>
+
+        <div id="win-message"></div>
       </div>
 
-      <div id="win-message"></div>
     </div>
     <script type="module" src="/main.js"></script>
   </body>

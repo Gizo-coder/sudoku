@@ -1,20 +1,26 @@
 import './style.css';
 
+const landingScreen = document.getElementById('landing-screen');
+const gameScreen = document.getElementById('game-screen');
+const startPuzzleButton = document.getElementById('start-puzzle-button');
+const menuButton = document.getElementById('menu-button');
+
 const gridContainer = document.getElementById('sudoku-grid');
 const timerDisplay = document.getElementById('timer');
 const winMessage = document.getElementById('win-message');
-const difficultyButtons = document.querySelectorAll('#difficulty-menu button');
-const gridWrapper = document.getElementById('grid-wrapper');
-const startOverlay = document.getElementById('start-overlay');
-const startButton = document.getElementById('start-button');
+const difficultyButtons = document.querySelectorAll('.diff-card');
 const hintButton = document.getElementById('hint-button');
 const bestTimeInfo = document.getElementById('best-time-info');
+
+const statSolved = document.getElementById('stat-solved');
+const statStreak = document.getElementById('stat-streak');
+const statFastest = document.getElementById('stat-fastest');
+
 const MAX_HINTS = 3;
 
 let timerInterval = null;
 let secondsElapsed = 0;
 let isGameWon = false;
-let gameStarted = false;
 let selectedDifficulty = 'easy';
 let solvedBoard = null;
 let hintsRemaining = MAX_HINTS;
@@ -29,11 +35,9 @@ function isValid(board, row, col, num) {
   for (let x = 0; x < 9; x++) {
     if (board[row][x] === num) return false;
   }
-
   for (let x = 0; x < 9; x++) {
     if (board[x][col] === num) return false;
   }
-
   const startRow = row - (row % 3);
   const startCol = col - (col % 3);
   for (let i = 0; i < 3; i++) {
@@ -41,7 +45,6 @@ function isValid(board, row, col, num) {
       if (board[startRow + i][startCol + j] === num) return false;
     }
   }
-
   return true;
 }
 
@@ -49,11 +52,9 @@ function hasConflict(board, row, col, num) {
   for (let x = 0; x < 9; x++) {
     if (x !== col && board[row][x] === num) return true;
   }
-
   for (let x = 0; x < 9; x++) {
     if (x !== row && board[x][col] === num) return true;
   }
-
   const startRow = row - (row % 3);
   const startCol = col - (col % 3);
   for (let i = 0; i < 3; i++) {
@@ -63,7 +64,6 @@ function hasConflict(board, row, col, num) {
       if ((r !== row || c !== col) && board[r][c] === num) return true;
     }
   }
-
   return false;
 }
 
@@ -81,19 +81,13 @@ function fillBoard(board) {
     for (let col = 0; col < 9; col++) {
       if (board[row][col] === 0) {
         const numbers = shuffleNumbers();
-
         for (const num of numbers) {
           if (isValid(board, row, col, num)) {
             board[row][col] = num;
-
-            if (fillBoard(board)) {
-              return true;
-            }
-
+            if (fillBoard(board)) return true;
             board[row][col] = 0;
           }
         }
-
         return false;
       }
     }
@@ -109,11 +103,7 @@ function generateSolvedBoard() {
 
 // ============ ZORLUK SEVİYESİNE GÖRE BULMACA OLUŞTURMA ============
 
-const DIFFICULTY_SETTINGS = {
-  easy: 40,
-  medium: 50,
-  hard: 58
-};
+const DIFFICULTY_SETTINGS = { easy: 40, medium: 50, hard: 58 };
 
 function createPuzzle(solvedBoard, difficulty) {
   const puzzle = solvedBoard.map(row => [...row]);
@@ -176,20 +166,16 @@ function createGrid(puzzle) {
 
 function selectCell(row, col) {
   if (originalPuzzle[row][col] !== 0) return;
-
   selectedCell = { row, col };
   updateGridDisplay();
 }
 
 function updateGridDisplay() {
   const cells = gridContainer.querySelectorAll('.cell');
-
   cells.forEach(cell => {
     const row = parseInt(cell.dataset.row);
     const col = parseInt(cell.dataset.col);
-
     cell.classList.remove('selected');
-
     if (selectedCell && selectedCell.row === row && selectedCell.col === col) {
       cell.classList.add('selected');
     }
@@ -198,7 +184,6 @@ function updateGridDisplay() {
 
 function handleKeyPress(e) {
   if (!selectedCell || isGameWon) return;
-
   const { row, col } = selectedCell;
 
   if (e.key >= '1' && e.key <= '9') {
@@ -237,7 +222,6 @@ function refreshRelatedCells(changedRow, changedCol) {
     for (let col = 0; col < 9; col++) {
       const value = currentPuzzle[row][col];
       if (value === 0) continue;
-
       if (originalPuzzle[row][col] !== 0) continue;
 
       const cell = gridContainer.querySelector(`[data-row="${row}"][data-col="${col}"]`);
@@ -259,23 +243,21 @@ function checkWin() {
       if (currentPuzzle[row][col] === 0) return false;
     }
   }
-
   for (let row = 0; row < 9; row++) {
     for (let col = 0; col < 9; col++) {
       const value = currentPuzzle[row][col];
       if (hasConflict(currentPuzzle, row, col, value)) return false;
     }
   }
-
   return true;
 }
 
 function handleWin() {
   isGameWon = true;
   stopTimer();
+
   const bestTimeKey = 'sudoku_best_' + selectedDifficulty;
   const previousBest = localStorage.getItem(bestTimeKey);
-
   let isNewRecord = false;
 
   if (!previousBest || secondsElapsed < parseInt(previousBest)) {
@@ -284,12 +266,23 @@ function handleWin() {
   }
 
   let message = `🎉 Tebrikler! ${formatTime(secondsElapsed)} sürede tamamladın!`;
-  if (isNewRecord) {
-    message += ' Yeni Rekor! 🏆';
-  }
+  if (isNewRecord) message += ' Yeni Rekor! 🏆';
 
-  winMessage.textContent = message;
+  winMessage.innerHTML = `
+    <div>${message}</div>
+    <div class="win-actions">
+      <button id="play-again-button">Tekrar Oyna</button>
+      <button id="back-to-menu-button">Menüye Dön</button>
+    </div>
+  `;
+
+  document.getElementById('play-again-button').addEventListener('click', () => {
+    startNewGame(selectedDifficulty);
+  });
+  document.getElementById('back-to-menu-button').addEventListener('click', showLandingScreen);
+
   updateBestTimeDisplay();
+  recordSolve();
 }
 
 function getBestTime(difficulty) {
@@ -301,6 +294,52 @@ function getBestTime(difficulty) {
 function updateBestTimeDisplay() {
   const best = getBestTime(selectedDifficulty);
   bestTimeInfo.textContent = best !== null ? 'En İyi: ' + formatTime(best) : '';
+
+  ['easy', 'medium', 'hard'].forEach(diff => {
+    const el = document.getElementById('best-' + diff);
+    const t = getBestTime(diff);
+    el.textContent = t !== null ? formatTime(t) : '';
+  });
+}
+
+// ============ İSTATİSTİKLER (çözülen, seri) ============
+
+function recordSolve() {
+  const today = new Date().toDateString();
+  const lastPlayed = localStorage.getItem('sudoku_last_played');
+  let streak = parseInt(localStorage.getItem('sudoku_streak') || '0');
+  let solvedCount = parseInt(localStorage.getItem('sudoku_solved_count') || '0');
+
+  solvedCount++;
+  localStorage.setItem('sudoku_solved_count', solvedCount);
+
+  if (lastPlayed !== today) {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    if (lastPlayed === yesterday.toDateString()) {
+      streak++;
+    } else {
+      streak = 1;
+    }
+
+    localStorage.setItem('sudoku_streak', streak);
+    localStorage.setItem('sudoku_last_played', today);
+  }
+
+  updateStatsDisplay();
+}
+
+function updateStatsDisplay() {
+  const solvedCount = localStorage.getItem('sudoku_solved_count') || '0';
+  const streak = localStorage.getItem('sudoku_streak') || '0';
+
+  const times = ['easy', 'medium', 'hard'].map(d => getBestTime(d)).filter(t => t !== null);
+  const fastest = times.length > 0 ? Math.min(...times) : null;
+
+  statSolved.textContent = solvedCount;
+  statStreak.textContent = streak;
+  statFastest.textContent = fastest !== null ? formatTime(fastest) : '--:--';
 }
 
 // ============ ZAMANLAYICI ============
@@ -338,7 +377,7 @@ document.addEventListener('keydown', handleKeyPress);
 // ============ İPUCU ============
 
 function giveHint() {
-  if (isGameWon || !gameStarted || hintsRemaining <= 0) return;
+  if (isGameWon || hintsRemaining <= 0) return;
 
   if (!selectedCell) {
     alert('Önce ipucu almak istediğin bir hücreyi seç.');
@@ -367,47 +406,26 @@ function updateHintButtonDisplay() {
   hintButton.disabled = hintsRemaining <= 0;
 }
 
-// ============ OYUNU BAŞLAT ============
+// ============ EKRAN GEÇİŞLERİ ============
 
-const difficultyLabels = {
-  easy: 'Kolay',
-  medium: 'Orta',
-  hard: 'Zor'
-};
-
-function renderPreviewGrid() {
-  gridContainer.innerHTML = '';
-  gridContainer.classList.add('preview');
-
-  for (let row = 0; row < 9; row++) {
-    for (let col = 0; col < 9; col++) {
-      const cell = document.createElement('div');
-      cell.classList.add('cell');
-
-      if (row === 2 || row === 5) {
-        cell.classList.add('row-thick-bottom');
-      }
-
-      gridContainer.appendChild(cell);
-    }
-  }
+function showLandingScreen() {
+  stopTimer();
+  gameScreen.style.display = 'none';
+  landingScreen.style.display = 'block';
+  updateBestTimeDisplay();
+  updateStatsDisplay();
 }
 
-function showStartScreen() {
-  gameStarted = false;
-  renderPreviewGrid();
-  startOverlay.style.display = 'flex';
-  timerDisplay.textContent = 'Süre: 00:00';
-  bestTimeInfo.textContent = '';
-  winMessage.textContent = '';
+function showGameScreen() {
+  landingScreen.style.display = 'none';
+  gameScreen.style.display = 'block';
 }
 
 function startNewGame(difficulty) {
-  gameStarted = true;
-  startOverlay.style.display = 'none';
-  gridContainer.classList.remove('preview');
+  showGameScreen();
+
   isGameWon = false;
-  winMessage.textContent = '';
+  winMessage.innerHTML = '';
   selectedCell = null;
   hintsRemaining = MAX_HINTS;
   updateHintButtonDisplay();
@@ -417,29 +435,28 @@ function startNewGame(difficulty) {
 
   createGrid(puzzle);
   startTimer();
-
   updateBestTimeDisplay();
-
-  difficultyButtons.forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.difficulty === difficulty);
-  });
 }
+
+// ============ OLAY DİNLEYİCİLERİ ============
 
 difficultyButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     selectedDifficulty = btn.dataset.difficulty;
-    if (!gameStarted) {
-      difficultyButtons.forEach(b => b.classList.toggle('active', b === btn));
-    } else {
-      startNewGame(selectedDifficulty);
-    }
+    difficultyButtons.forEach(b => b.classList.toggle('active', b === btn));
   });
 });
 
-startOverlay.addEventListener('click', () => {
+startPuzzleButton.addEventListener('click', () => {
   startNewGame(selectedDifficulty);
 });
 
+menuButton.addEventListener('click', showLandingScreen);
+
 hintButton.addEventListener('click', giveHint);
 
-showStartScreen();
+// ============ BAŞLANGIÇ ============
+
+difficultyButtons[0].classList.add('active');
+updateBestTimeDisplay();
+updateStatsDisplay();
