@@ -3,7 +3,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f7f7f5;
+  background-color: #a7a0f1;
   margin: 0;
   padding: 40px 0;
 }
@@ -39,7 +39,7 @@ body {
 }
 
 #tagline {
-  color: #777;
+  color: #f7f5f5;
   font-size: 14px;
   margin: 0;
 }
@@ -144,7 +144,7 @@ body {
 
 .stat-label {
   font-size: 11px;
-  color: #888;
+  color: #f9f6f6;
   margin: 0;
 }
 
@@ -305,4 +305,38 @@ body {
 .num-btn.clear-btn {
   color: #a32d2d;
   border-color: #a32d2d;
+}
+
+#theme-menu {
+  margin: 4px 0 16px;
+  text-align: center;
+}
+
+#theme-title {
+  font-size: 13px;
+  color: #fefbfb;
+  margin: 0 0 8px;
+}
+
+#theme-options {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.theme-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background: white;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-btn.active {
+  border-color: #faf8f8;
 }

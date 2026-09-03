@@ -18,6 +18,19 @@ const statFastest = document.getElementById('stat-fastest');
 
 const MAX_HINTS = 3;
 
+const THEMES = {
+  numbers: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+  emoji: ['😀', '😂', '😎', '🥳', '😱', '🤯', '🥶', '🤩', '😴'],
+  flowers: ['🌸', '🌹', '🌻', '🌺', '🌼', '🌷', '🪷', '🪻', '🥀'],
+  balls: ['🔴', '🟠', '🟡', '🟢', '🔵', '🟣', '🟤', '⚪', '⚫']
+};
+let selectedTheme = 'numbers';
+
+function getSymbol(num) {
+  if (num === 0) return '';
+  return THEMES[selectedTheme][num - 1];
+}
+
 let timerInterval = null;
 let secondsElapsed = 0;
 let isGameWon = false;
@@ -152,10 +165,10 @@ function createGrid(puzzle) {
         cell.classList.add('row-thick-bottom');
       }
 
-      if (puzzle[row][col] !== 0) {
-        cell.textContent = puzzle[row][col];
-        cell.classList.add('given');
-      }
+     if (puzzle[row][col] !== 0) {
+      cell.textContent = getSymbol(puzzle[row][col]);
+      cell.classList.add('given');
+     }
 
       cell.addEventListener('click', () => selectCell(row, col));
 
@@ -215,7 +228,7 @@ function renderCellValue(row, col) {
   const cell = gridContainer.querySelector(`[data-row="${row}"][data-col="${col}"]`);
   const value = currentPuzzle[row][col];
 
-  cell.textContent = value === 0 ? '' : value;
+  cell.textContent = getSymbol(value);
   cell.classList.toggle('user-input', value !== 0);
 
   if (value !== 0 && hasConflict(currentPuzzle, row, col, value)) {
@@ -419,6 +432,13 @@ function updateHintButtonDisplay() {
   hintButton.textContent = `💡 İpucu (${hintsRemaining})`;
   hintButton.disabled = hintsRemaining <= 0;
 }
+function updateNumberPadSymbols() {
+  document.querySelectorAll('.num-btn').forEach(btn => {
+    const num = parseInt(btn.dataset.num);
+    if (num === 0) return;
+    btn.textContent = getSymbol(num);
+  });
+}
 
 // ============ EKRAN GEÇİŞLERİ ============
 
@@ -468,9 +488,18 @@ startPuzzleButton.addEventListener('click', () => {
 menuButton.addEventListener('click', showLandingScreen);
 
 hintButton.addEventListener('click', giveHint);
+
 document.querySelectorAll('.num-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     handleNumberInput(parseInt(btn.dataset.num));
+  });
+});
+
+document.querySelectorAll('.theme-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedTheme = btn.dataset.theme;
+    document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b === btn));
+    updateNumberPadSymbols();
   });
 });
 
@@ -479,3 +508,4 @@ document.querySelectorAll('.num-btn').forEach(btn => {
 difficultyButtons[0].classList.add('active');
 updateBestTimeDisplay();
 updateStatsDisplay();
+updateNumberPadSymbols();
