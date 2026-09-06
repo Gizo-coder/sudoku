@@ -2,6 +2,7 @@
 <html lang="tr">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sudoku</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   </head>
@@ -12,13 +13,13 @@
       <div id="landing-screen">
         <div id="landing-header">
           <div id="preview-board">
-            <svg width="70" height="70" viewBox="0 0 120 120">
-              <rect x="1" y="1" width="118" height="118" fill="none" stroke="#333" stroke-width="2"/>
-              <line x1="40" y1="1" x2="40" y2="119" stroke="#333" stroke-width="2"/>
-              <line x1="80" y1="1" x2="80" y2="119" stroke="#333" stroke-width="2"/>
-              <line x1="1" y1="40" x2="119" y2="40" stroke="#333" stroke-width="2"/>
-              <line x1="1" y1="80" x2="119" y2="80" stroke="#333" stroke-width="2"/>
-              <g stroke="#ccc" stroke-width="0.5">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+              <rect x="1" y="1" width="118" height="118" fill="none" stroke="#4a4a52" stroke-width="1.5"/>
+              <line x1="40" y1="1" x2="40" y2="119" stroke="#4a4a52" stroke-width="1.5"/>
+              <line x1="80" y1="1" x2="80" y2="119" stroke="#4a4a52" stroke-width="1.5"/>
+              <line x1="1" y1="40" x2="119" y2="40" stroke="#4a4a52" stroke-width="1.5"/>
+              <line x1="1" y1="80" x2="119" y2="80" stroke="#4a4a52" stroke-width="1.5"/>
+              <g stroke="#333338" stroke-width="0.5">
                 <line x1="13.33" y1="1" x2="13.33" y2="119"/><line x1="26.67" y1="1" x2="26.67" y2="119"/>
                 <line x1="53.33" y1="1" x2="53.33" y2="119"/><line x1="66.67" y1="1" x2="66.67" y2="119"/>
                 <line x1="93.33" y1="1" x2="93.33" y2="119"/><line x1="106.67" y1="1" x2="106.67" y2="119"/>
@@ -26,15 +27,15 @@
                 <line x1="1" y1="53.33" x2="119" y2="53.33"/><line x1="1" y1="66.67" x2="119" y2="66.67"/>
                 <line x1="1" y1="93.33" x2="119" y2="93.33"/><line x1="1" y1="106.67" x2="119" y2="106.67"/>
               </g>
-              <text x="6.67" y="10.67" text-anchor="middle" font-size="11" fill="#333">4</text>
-              <text x="60" y="10.67" text-anchor="middle" font-size="11" fill="#333">8</text>
-              <text x="100" y="24" text-anchor="middle" font-size="11" fill="#1a73e8">2</text>
-              <text x="33.33" y="37.33" text-anchor="middle" font-size="11" fill="#333">6</text>
-              <text x="86.67" y="50.67" text-anchor="middle" font-size="11" fill="#1a73e8">9</text>
-              <text x="6.67" y="64" text-anchor="middle" font-size="11" fill="#333">3</text>
-              <text x="46.67" y="77.33" text-anchor="middle" font-size="11" fill="#1a73e8">1</text>
-              <text x="113.33" y="90.67" text-anchor="middle" font-size="11" fill="#333">7</text>
-              <text x="73.33" y="104" text-anchor="middle" font-size="11" fill="#333">5</text>
+              <text x="6.67" y="10.67" text-anchor="middle" font-size="11" fill="#c9c7c0">4</text>
+              <text x="60" y="10.67" text-anchor="middle" font-size="11" fill="#c9c7c0">8</text>
+              <text x="100" y="24" text-anchor="middle" font-size="11" fill="#c9a876">2</text>
+              <text x="33.33" y="37.33" text-anchor="middle" font-size="11" fill="#c9c7c0">6</text>
+              <text x="86.67" y="50.67" text-anchor="middle" font-size="11" fill="#c9a876">9</text>
+              <text x="6.67" y="64" text-anchor="middle" font-size="11" fill="#c9c7c0">3</text>
+              <text x="113.33" y="90.67" text-anchor="middle" font-size="11" fill="#c9c7c0">7</text>
+              <text x="46.67" y="103" text-anchor="middle" font-size="11" fill="#c9a876">1</text>
+              <text x="86.67" y="116" text-anchor="middle" font-size="11" fill="#c9c7c0">5</text>
             </svg>
          </div>
           <h1>Sudoku</h1>
@@ -80,6 +81,8 @@
             <button class="theme-btn" data-theme="emoji">😀</button>
             <button class="theme-btn" data-theme="flowers">🌸</button>
             <button class="theme-btn" data-theme="balls">🔴</button>
+            <button class="theme-btn" data-theme="diamonds">💎</button>
+            <button class="theme-btn" data-theme="gold">💍</button>
           </div>
         </div>
 
