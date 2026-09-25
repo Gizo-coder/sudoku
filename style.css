@@ -46,9 +46,7 @@ body {
 }
 
 #preview-board {
-  background: #232328;
-  border-radius: 12px;
-  padding: 16px;
+  padding: 20px;
   display: flex;
   justify-content: center;
   margin: 20px 0;
