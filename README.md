@@ -80,3 +80,8 @@ This project is open source and available for learning purposes.
 ## 🙋 About This Project
 
 This game was built as a personal learning project to practice algorithmic thinking (backtracking), DOM manipulation, and state management — all without relying on any external framework or library.
+
+## 📦 Android Package Info
+
+- **Package name / Application ID:** `com.gizgames.sudoku`
+- Google Play Console'da bu isimle kaydedildi, Android sarmalama (TWA/Capacitor) aşamasında bu ismin aynen kullanılması gerekiyor.
